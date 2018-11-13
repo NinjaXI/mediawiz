@@ -4,25 +4,35 @@ Created on 18 Oct 2018
 @author: NinjaXI
 '''
 
+#TODO error logging
 import os
 import re
 import sys
+import logging
 from tvsources.tvdbsource import TvdbSource
+import util
+
+logger = logging.getLogger("mediawiz")
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler("mediawiz.log")
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s - %(message)s"))
+logger.addHandler(fh)
 
 scanDir = ""
 try:
     scanDir = sys.argv[1]
 except:
     print("usage: mediawiz.py <inputfolder>")
-    #scanDir = "..\..\#testfolder\test" #for testing
+    #scanDir = "../../#testfolder/" #for testing
     sys.exit(2)
     
 if not os.path.exists(scanDir):
     print("Path does not exist : " + scanDir)
-    #scanDir = "..\..\#testfolder\test" #for testing
+    #scanDir = "../../#testfolder/" #for testing
     sys.exit(2)
 
-titleFormat = "$st - $snx$en - $et" # TODO configurable
+titleFormat = "%(st)s - %(sn)sx%(en)s - %(et)s" # TODO configurable
 
 tvSource = TvdbSource()
 
@@ -67,9 +77,13 @@ for mediaFile in os.listdir(scanDir):
                 episodeNr = int(regMatch[1])
                 try:
                     episodeName = tvSource.findEpisode(seasonNr, episodeNr, seriesId)
+                    newFilename = util.sanitiseFilename(titleFormat % {"st" : seriesName, "sn" : str(seasonNr), 
+                                                                       "en" : str(episodeNr).zfill(2), "et" : episodeName})
+                    os.rename(os.path.join(scanDir, mediaFile), os.path.join(scanDir, newFilename + mediaFile[mediaFile.rindex("."):]))
+                    logger.info("Renamed " + mediaFile + " to " + newFilename + mediaFile[mediaFile.rindex("."):])
+                    print(newFilename)
                 except:
-                    print("ERROR : Cannot find episodeNr " + str(episodeNr) + " of seasonNr " + str(seasonNr) + " of " + seriesName)              
+                    print("ERROR : Cannot find episodeNr " + str(episodeNr) + " of seasonNr " + str(seasonNr) + " of " + seriesName + "(" + seriesId + ")")
             except:
                 print("ERROR : Cannot find " + titlePart.replace(".", " "))
-        newFilename = titleFormat.replace("$st", seriesName).replace("$sn", str(seasonNr)).replace("$en", str(episodeNr).zfill(2)).replace("$et", str(episodeName))
-        print(scanDir + "\\" + newFilename)
+        
