@@ -5,9 +5,7 @@ Created on 21 Oct 2018
 '''
 
 import requests
-
 from tvsources.basetvsource import BaseTvSource
-
 
 class TvdbSource(BaseTvSource):
     def __init__(self):

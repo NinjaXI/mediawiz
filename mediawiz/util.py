@@ -5,6 +5,10 @@ Created on 13 Nov 2018
 '''
 
 import re
+import os
+
+def listDirFullPath(path):
+    return [os.path.join(path, file) for file in os.listdir(path)]
 
 def sanitiseFilename(s):
     s = s.replace(":", "- ").replace("\\", " ").replace("/", " ")
