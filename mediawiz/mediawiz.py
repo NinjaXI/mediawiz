@@ -8,9 +8,9 @@ Created on 18 Oct 2018
 #TODO test moving files before they are reached
 import sys
 import logging
-import config
-from tvsources.tvdbsource import TvdbSource
 from fileservices import tvfileservice
+
+print("Starting MediaWiz")
 
 logger = logging.getLogger("mediawiz")
 logger.setLevel(logging.DEBUG)
@@ -25,6 +25,5 @@ else:
     print("usage: mediawiz.py <fileList>")
     sys.exit(2)
 
-config.tvSource = TvdbSource()
-
 tvfileservice.renameFiles(scanList, True)
+exitInp = input("Press any key to exit")

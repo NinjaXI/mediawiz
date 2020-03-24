@@ -17,10 +17,11 @@ class TvdbSource(BaseTvSource):
         # TODO refresh token timing
     
     def findSeries(self, seriesName):
+        retList = []
+                
         r = requests.get(self.apiurl + "search/series", params = {"name":seriesName}, headers = self.headers)
         
         if r.status_code == 200:
-            retList = []
             for i in r.json()["data"] :
                 retList.append([i["id"], i["seriesName"]])
             return retList
@@ -29,7 +30,25 @@ class TvdbSource(BaseTvSource):
             
     def findEpisode(self, seasonNo, episodeNo, seriesId):
         r = requests.get(self.apiurl + "series/" + str(seriesId) + "/episodes/query", params = {"airedSeason":seasonNo, "airedEpisode":episodeNo}, headers = self.headers)
+
         if r.status_code == 200:
             return r.json()["data"][0]["episodeName"]
         else:
             raise BaseException()
+        
+    def findSeriesByCache(self, seriesName):
+        try:
+            with open("tvdbCache.txt") as sCache:
+                for line in sCache:
+                    if line.split("|")[0] == seriesName:
+                        return [line.split("|")[2].strip(), line.split("|")[1].strip()]
+        except:
+            return [-1, ""] 
+        return [-1, ""]
+    
+    def saveToCache(self, searchName, seriesName, seriesId):
+        try:
+            with open("tvdbCache.txt", "a") as sCache:
+                sCache.write(searchName + "|" + seriesName + "|" + seriesId + "\n")
+        except:
+            print("Cache Error")

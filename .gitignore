@@ -6,4 +6,7 @@
 /mediawiz/.project
 
 /mediawiz/mediawiz.log
+/mediawiz/forcedNames.txt
+/mediawiz/tvdbCache.txt
 __pycache__/ 
+*.code-workspace
