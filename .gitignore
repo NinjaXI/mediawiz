@@ -10,3 +10,5 @@
 /mediawiz/tvdbCache.txt
 __pycache__/ 
 *.code-workspace
+mediawiz.log
+.vscode/settings.json

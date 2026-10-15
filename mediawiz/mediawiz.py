@@ -8,7 +8,7 @@ Created on 18 Oct 2018
 #TODO test moving files before they are reached
 import sys
 import logging
-from fileservices import tvfileservice
+import mediafileservice
 
 print("Starting MediaWiz")
 
@@ -25,5 +25,5 @@ else:
     print("usage: mediawiz.py <fileList>")
     sys.exit(2)
 
-tvfileservice.renameFiles(scanList, True)
+mediafileservice.renameFiles(scanList, True)
 exitInp = input("Press any key to exit")
