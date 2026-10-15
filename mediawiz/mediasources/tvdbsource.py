@@ -8,10 +8,10 @@ import requests
 from mediasources.basemediasource import BaseMediaSource
 
 class TvdbSource(BaseMediaSource):
-    def __init__(self):
+    def __init__(self, apiKey):
         self.apiurl = "https://api.thetvdb.com/"
         
-        r = requests.post(self.apiurl + "login", json = {"apikey":"BO3YJVOHA8115LB4"}, headers = {"Content-Type":"application/json", "Accept":"application/json"})
+        r = requests.post(self.apiurl + "login", json = {"apikey": apiKey}, headers = {"Content-Type":"application/json", "Accept":"application/json"})
         self.jwttoken = r.json()["token"]
         self.headers = {"Content-Type":"application/json", "Accept":"application/json", "Authorization":"Bearer " + self.jwttoken}
         # TODO refresh token timing

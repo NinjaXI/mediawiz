@@ -8,10 +8,10 @@ import requests
 from mediasources.basemediasource import BaseMediaSource
 
 class OmdbSource(BaseMediaSource):
-    def __init__(self):
-        #http://www.omdbapi.com/?i=tt3896198&apikey=c202a954
+    def __init__(self, apiKey):
+        #http://www.omdbapi.com/?i=tt3896198&apikey=<apiKey>
         self.apiurl = "http://www.omdbapi.com/"
-        self.apikey = "c202a954"
+        self.apikey = apiKey
     
     def findMovie(self, movieName, movieYear):
         #TODO handle not found

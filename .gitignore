@@ -12,3 +12,5 @@ __pycache__/
 *.code-workspace
 mediawiz.log
 .vscode/settings.json
+mediawiz/properties.toml
+docs/
