@@ -120,7 +120,7 @@ def renameFiles(scanList, scanFolders):
                     try:
                         seriesId, seriesName = getSeries(seriesString)
                         try:
-                            seasonNr, episodeNr, episodeName = getEpisodeForAbsoluteNo(m.groups()[0], seriesId)
+                            seasonNr, episodeNr, episodeName = getEpisodeForAbsoluteNo(int(m.groups()[0]), seriesId)
                             newFilename = util.sanitiseFilename(config.seriesFormat % {"st" : seriesName, "sn" : str(seasonNr), 
                                                                             "en" : str(episodeNr).zfill(2), "et" : episodeName})
                             os.rename(mediaFile, os.path.join(os.path.dirname(mediaFile), newFilename + mediaFileName[mediaFileName.rindex("."):]))
