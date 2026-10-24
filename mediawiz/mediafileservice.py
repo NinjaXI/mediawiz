@@ -23,7 +23,7 @@ def getForcedSeriesName(seriesName):
     except:
         ret = ret
     return ret
-     
+
 def getSeries(seriesString):
     seriesId, seriesName = seriesSource.findSeriesByCache(seriesString)
     if seriesId == -1 and seriesName == "":
@@ -34,19 +34,31 @@ def getSeries(seriesString):
             if series[1] == seriesString:
                 seriesId = str(series[0])
                 seriesName = series[1]
+                seriesSource.saveToCache(seriesString, seriesName, seriesId)
                 found = True
+
                 break
-            if not found:
+
+        if not found:
+            while True:
                 for ind, series in enumerate(seriesList):
-                    print(str(ind) + ". " + series[1])
+                    print(str(ind + 1) + ". " + series[1])
+
+                print("0. Cancel")
                 usrInd = input("Select the correct show")
+
+                if usrInd == "0":
+                    break
+
                 try:
-                    seriesId = str(seriesList[int(usrInd)][0])
-                    seriesName = str(seriesList[int(usrInd)][1])
+                    seriesId = str(seriesList[int(usrInd) - 1][0])
+                    seriesName = str(seriesList[int(usrInd) - 1][1])
+                    seriesSource.saveToCache(seriesString, seriesName, seriesId)
+
+                    break
                 except:
-                    print("Not Int") # TODO ask again
-        seriesSource.saveToCache(seriesString, seriesName, seriesId)
-          
+                    print("Invalid input : " + usrInd)
+  
     return [seriesId, getForcedSeriesName(seriesName).strip()]
 
 def getEpisode(epPart, seriesId):
